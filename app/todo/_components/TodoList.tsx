@@ -1,6 +1,7 @@
 'use client'
 import { trpcClient } from '@/lib/_trpc/trpcClient'
 import { trpcServer } from '@/lib/_trpc/trpcServer'
+import Link from 'next/link'
 import { useState } from 'react'
 
 export default function TodoList({
@@ -10,24 +11,24 @@ export default function TodoList({
 }) {
   const getTodos = trpcClient.sample.getTodos.useQuery(undefined, {
     initialData: initialTodos,
-    refetchOnMount: false,
+    // refetchOnMount: false,
     refetchOnReconnect: false,
   })
+  const onSettled = () => getTodos.refetch()
   const addTodo = trpcClient.sample.addTodo.useMutation({
-    onSettled: () => {
-      getTodos.refetch()
-    },
+    onSettled,
   })
   const setDone = trpcClient.sample.setDone.useMutation({
-    onSettled: () => {
-      getTodos.refetch()
-    },
+    onSettled,
+  })
+  const deleteTodo = trpcClient.sample.deleteTodo.useMutation({
+    onSettled,
   })
 
   const [content, setContent] = useState('')
 
   return (
-    <div>
+    <div className="flex flex-col items-center ">
       <div className="text-black my-5 text-3xl">
         {getTodos?.data?.map((todo) => (
           <div key={todo.id} className="flex gap-3 items-center">
@@ -44,6 +45,16 @@ export default function TodoList({
               }}
             />
             <label htmlFor={`check-${todo.id}`}>{todo.content}</label>
+            <Link href={`/todo/${todo.id}`}>Link</Link>
+            <button
+              onClick={() => {
+                deleteTodo.mutate(todo.id)
+              }}
+              className=" bg-indigo-200 rounded-sm"
+            >
+              {' '}
+              delete
+            </button>
           </div>
         ))}
       </div>

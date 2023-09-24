@@ -1,14 +1,9 @@
-import { trpcServer } from '@/lib/_trpc/trpcServer'
+'use client'
 
-import TodoList from './_components/TodoList'
+import Link from 'next/link'
 
-export const dynamic = 'force-dynamic'
-
-export default async function Home() {
-  const todos = await trpcServer.sample.getTodos()
-  return (
-    <main className="max-w-3xl mx-auto mt-5">
-      <TodoList initialTodos={todos} />
-    </main>
-  )
+function Home() {
+  return <Link href="/todo">Todo</Link>
 }
+
+export default Home
