@@ -28,7 +28,7 @@ export const sampleRouter = router({
     return { ...data, id: data?.id.toString() }
   }),
   addTodo: publicProcedure.input(z.string()).mutation(async ({ input }) => {
-    await prismadb.todos.create({ data: { content: input } })
+    await prismadb.todos.create({ data: { content: input, userId: 1 } })
     revalidatePath('/todo')
     return true
   }),

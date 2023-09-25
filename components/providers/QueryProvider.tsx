@@ -4,6 +4,7 @@ import { httpBatchLink } from '@trpc/client'
 import React, { useState } from 'react'
 
 import { trpcClient as trpc } from '@/lib/_trpc/trpcClient'
+import { SessionProvider } from 'next-auth/react'
 
 export default function QueryProvider({
   children,
@@ -22,7 +23,9 @@ export default function QueryProvider({
   )
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <SessionProvider>{children}</SessionProvider>
+      </QueryClientProvider>
     </trpc.Provider>
   )
 }

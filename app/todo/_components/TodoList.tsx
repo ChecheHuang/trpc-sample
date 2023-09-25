@@ -1,4 +1,7 @@
 'use client'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
 import { trpcClient } from '@/lib/_trpc/trpcClient'
 import { trpcServer } from '@/lib/_trpc/trpcServer'
 import Link from 'next/link'
@@ -28,16 +31,17 @@ export default function TodoList({
   const [content, setContent] = useState('')
 
   return (
-    <div className="flex flex-col items-center ">
-      <div className="text-black my-5 text-3xl">
+    <div className="flex flex-col items-center  ">
+      <div className="text-black my-5 text-3xl flex flex-col gap-3">
         {getTodos?.data?.map((todo) => (
-          <div key={todo.id} className="flex gap-3 items-center">
-            <input
+          <div
+            key={todo.id}
+            className="flex gap-3 items-center min-w-[300px] justify-between"
+          >
+            <Checkbox
               id={`check-${todo.id}`}
-              type="checkbox"
               checked={!!todo.done}
-              style={{ zoom: 1.5 }}
-              onChange={async () => {
+              onCheckedChange={async () => {
                 setDone.mutate({
                   id: todo.id,
                   done: !todo.done,
@@ -45,38 +49,41 @@ export default function TodoList({
               }}
             />
             <label htmlFor={`check-${todo.id}`}>{todo.content}</label>
-            <Link href={`/todo/${todo.id}`}>Link</Link>
-            <button
+            <Link
+              className={buttonVariants({ variant: 'ghost' })}
+              href={`/todo/${todo.id}`}
+            >
+              Link
+            </Link>
+            <Button
+              variant="destructive"
               onClick={() => {
                 deleteTodo.mutate(todo.id)
               }}
-              className=" bg-indigo-200 rounded-sm"
             >
-              {' '}
               delete
-            </button>
+            </Button>
           </div>
         ))}
       </div>
       <div className="flex gap-3 items-center">
         <label htmlFor="content">todo:</label>
-        <input
+        <Input
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="flex-grow text-black bg-white rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-4 py-2 border-2"
         />
-        <button
+        <Button
           onClick={async () => {
             if (content.length) {
               addTodo.mutate(content)
               setContent('')
             }
           }}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          className=" whitespace-nowrap"
         >
           增加
-        </button>
+        </Button>
       </div>
     </div>
   )
