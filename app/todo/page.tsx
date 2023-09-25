@@ -3,6 +3,7 @@ import { trpcServer } from '@/lib/_trpc/trpcServer'
 import { Metadata } from 'next'
 import TodoList from './_components/TodoList'
 
+// export const revalidate = 1
 // export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Todo List',

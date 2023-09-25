@@ -27,12 +27,11 @@ export const sampleRouter = router({
     })
     return { ...data, id: data?.id.toString() }
   }),
-  addTodo: publicProcedure
-    .input(z.string())
-    .mutation(
-      async ({ input }) =>
-        await prismadb.todos.create({ data: { content: input } })
-    ),
+  addTodo: publicProcedure.input(z.string()).mutation(async ({ input }) => {
+    await prismadb.todos.create({ data: { content: input } })
+    revalidatePath('/todo')
+    return true
+  }),
   deleteTodo: publicProcedure.input(z.string()).mutation(async ({ input }) => {
     await prismadb.todos.delete({
       where: {
