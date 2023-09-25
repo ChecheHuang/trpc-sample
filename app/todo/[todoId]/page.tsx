@@ -10,18 +10,10 @@ interface PageProps {
   }
 }
 const getTodo = async (todoId: string) => {
-  const data = await prismadb.todos.findFirst({
-    where: {
-      id: parseInt(todoId),
-    },
-    select: {
-      id: true,
-      content: true,
-      done: true,
-    },
-  })
+  const data = await trpcServer.sample.getTodo(todoId)
+
   if (!data) return notFound()
-  return { ...data, id: data?.id.toString() }
+  return { ...data, id: data.id!.toString() }
 }
 export async function generateMetadata({
   params: { todoId },

@@ -17,7 +17,7 @@ export default function AddPage() {
   })
 
   return (
-    <div className="flex justify-center items-center w-full h-full">
+    <div className="flex justify-center items-center w-full  flex-1">
       <div className="flex gap-2">
         <Input
           id="content"

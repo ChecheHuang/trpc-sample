@@ -16,7 +16,7 @@ export default function QueryProvider({
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: 'http://localhost:3000/api/trpc',
+          url: getUrl(),
         }),
       ],
     })
@@ -28,4 +28,13 @@ export default function QueryProvider({
       </QueryClientProvider>
     </trpc.Provider>
   )
+}
+function getBaseUrl() {
+  if (typeof window !== 'undefined') return ''
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+  return 'http://localhost:3000'
+}
+
+export function getUrl() {
+  return getBaseUrl() + '/api/trpc'
 }

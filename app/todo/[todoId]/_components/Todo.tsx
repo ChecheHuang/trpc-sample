@@ -26,7 +26,7 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
     router.back()
   }
   return (
-    <div className="flex w-full h-full justify-center items-center flex-col">
+    <div className="flex w-full flex-1 justify-center items-center flex-col">
       <div key={getTodo.data.id} className="flex gap-3 items-center">
         <Checkbox
           id={`check-${getTodo.data.id}`}
